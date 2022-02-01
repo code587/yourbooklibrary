@@ -3,21 +3,7 @@ const { User, Book } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
-    Query: {
-      users: async () => {
-        return User.find().populate('books');
-      },
-      user: async (parent, { username }) => {
-        return User.findOne({ username }).populate('books');
-      },
-      thoughts: async (parent, { username }) => {
-        const params = username ? { username } : {};
-        return Book.find(params);
-      },
-      thought: async (parent, { thoughtId }) => {
-        return Thought.findOne({ _id: thoughtId });
-      },
-    },
+    
 
     Mutation: {
         addUser: async (parent, { username, email, password }) => {
@@ -50,22 +36,7 @@ const resolvers = {
       // Return an `Auth` object that consists of the signed token and user's information
       return { token, user };
     },
-    addBook: async (parent, { book, bookAuthor }) => {
-      const thought = await Book.create({ book, bookAuthor });
-
-      await User.findOneAndUpdate(
-        { username: book },
-        { $addToSet: { books: book._id } }
-      );
-
-      return book;
-      },
-
-      removeBook: async (parent, { bookId }) => {
-        return Book.findOneAndDelete({ _id: bookId });
     },
-},
-};
-
+  };
 
 module.exports = resolvers;
