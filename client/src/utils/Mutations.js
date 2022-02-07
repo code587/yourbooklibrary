@@ -1,14 +1,4 @@
 import { gql } from '@apollo/client';
-import { NavLink } from 'react-bootstrap';
-
-export const getMe = gql``
-  return fetch('/api/users/me', {
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: `Bearer ${token}`,
-    },
-  });
-
 
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
@@ -23,7 +13,7 @@ export const LOGIN_USER = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation addUser($username: String!, $email: String!, $password: String!) {
+  mutation createUser($username: String!, $email: String!, $password: String!) {
     createUser(username: $username, email: $email, password: $password) {
       token
       user {
@@ -33,9 +23,9 @@ export const CREATE_USER = gql`
     }
   }
 `;
-export const ADD_BOOK = gql`
+export const SAVE_BOOK = gql`
 mutation saveBook($bookId: ID!) {
-  addBook(bookId: $bookId) {
+  saveBook(bookId: $bookId) {
     _id
     authors
     description
@@ -47,8 +37,8 @@ mutation saveBook($bookId: ID!) {
 }
 `;
 export const DELETE_BOOK = gql`
-mutation removeBook($bookId: ID!) {
-  addBook(bookId: $bookId) {
+mutation deleteBook($bookId: ID!) {
+  deleteBook(bookId: $bookId) {
     _id
     authors
     description
@@ -59,6 +49,3 @@ mutation removeBook($bookId: ID!) {
   }
 }
 `;
-export const searchGoogleBooks = (query) => {
-  return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
-};
