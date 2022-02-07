@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-import { deleteBook } from '../utils/Mutations';
+import { getMe, deleteBook } from '../utils/Mutations';
 import Auth from '../utils/auth';
-import { deleteBookId } from '../utils/Mutations';
+
 
 const SavedBooks = () => {
   const [userData, setUserData] = useState({});
@@ -14,20 +14,16 @@ const SavedBooks = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
+
+        const response = await getMe(token);
         const token = Auth.loggedIn() ? Auth.getToken() : null;
 
         if (!token) {
           return false;
         }
 
-        const response = await getMe(token);
-
-        if (!response.ok) {
-          throw new Error('something went wrong!');
-        }
-
-        const user = await response.json();
-        setUserData(user);
+        const UserData = await response.json();
+        setUserData(getMe);
       } catch (err) {
         console.error(err);
       }
@@ -54,7 +50,7 @@ const SavedBooks = () => {
       const updatedUser = await response.json();
       setUserData(updatedUser);
       // upon success, remove book's id from localStorage
-      deleteBookId(bookId);
+     deleteBook(bookId);
     } catch (err) {
       console.error(err);
     }

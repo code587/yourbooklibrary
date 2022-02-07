@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const search = async (query) =>
+const searchBooks = async (query) =>
   axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
 
-export default { search };
+export default SearchBooks;

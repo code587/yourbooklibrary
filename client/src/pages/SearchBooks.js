@@ -4,7 +4,7 @@ import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'reac
 import Auth from '../utils/auth';
 import { saveBook } from '../utils/Mutations';
 
-import { searchGoogleBooks } from '../utils/API';
+import { searchBooks } from '../utils/API';
 
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
@@ -32,7 +32,7 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchGoogleBooks(searchInput);
+      const response = await searchBooks(searchInput);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
