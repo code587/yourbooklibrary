@@ -4,9 +4,9 @@ import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'reac
 import Auth from '../utils/auth';
 import { saveBook } from '../utils/Mutations';
 
-import { searchBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 
-import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+//import { saveBookIds, getSavedBookIds } from '../utils/Mutations';
 
 const SearchBooks = () => {
   // create state for holding returned google api data
@@ -32,7 +32,7 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchBooks(searchInput);
+      const response = await searchGoogleBooks(searchInput);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
