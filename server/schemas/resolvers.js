@@ -14,14 +14,14 @@ const resolvers = {
         throw new AuthenticationError('You need to be logged in!');
       },
     },
-      books: async (parent, { username }, context) => {
-        const params = username ? { username } : {};
-        return Book.find(params);
-      },
-      book: async (parent, { bookId }, context) => {
-        const params = bookId ? { bookId } : {};
-        return Book.findOne({ id: bookId });
-      },
+      // books: async (parent, { username }, context) => {
+      //   const params = username ? { username } : {};
+      //   return Book.find(params);
+      // },
+      // book: async (parent, { bookId }, context) => {
+      //   const params = bookId ? { bookId } : {};
+      //   return Book.findOne({ id: bookId });
+      // },
     
 
 Mutation: {

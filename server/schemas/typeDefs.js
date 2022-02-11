@@ -7,7 +7,7 @@ const typeDefs = gql`
     username: String
     email: String
     bookCount: String
-    savedBooks: [bookSchema]!
+    savedBooks: [authors, description, bookId, title, link, image]
   },
 
   type Book {

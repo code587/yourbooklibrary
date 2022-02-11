@@ -1,7 +1,15 @@
-import axios from 'axios';
 
-const searchGoogleBooks = async (query) =>
-  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+export const searchGoogleBooks = (query) => {
+  return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+};
 
 
-export default searchGoogleBooks;
+
+
+// import axios from 'axios';
+
+// const searchGoogleBooks = async (query) => 
+//   axios.get(`http://www.googleapis.com/books/v1/volumes?q=${query}`);
+
+
+// export default { searchGoogleBooks };
