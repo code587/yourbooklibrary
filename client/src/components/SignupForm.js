@@ -1,43 +1,52 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
-import { createUser } from '../utils/mutations';
-
+import { ADD_USER } from '../utils/Mutations';
 import Auth from '../utils/auth';
 
-const Signup = () => {
-  const [formState, setFormState] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
-  const [createUser, { error, data }] = useMutation(createUser);
 
-  const handleChange = (event) => {
+const SignupForm = () => {
+  // set initial form state
+  const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+  // set state for form validation
+  const [validated] = useState(false);
+  // set state for alert
+  const [showAlert, setShowAlert] = useState(false);
+  
+  const [addUser, {error}] = useMutation(ADD_USER);
+
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
+    setUserFormData({ ...userFormData, [name]: value });
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(formState);
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
     try {
-      const { data } = await createUser({
-        variables: { ...formState },
+      const {data} = await addUser({
+        variables: { userFormData},
       });
 
-      Auth.login(data.createUser.token);
-    } catch (e) {
-      console.error(e);
+      Auth.login(data.addUser.token);
+    } catch (err) {
+      console.error(err);
+      setShowAlert(true);
     }
-  };
 
+    setUserFormData({
+      username: '',
+      email: '',
+      password: '',
+    });
+  };
 
   return (
     <>
