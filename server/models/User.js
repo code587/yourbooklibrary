@@ -10,16 +10,18 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
-      match: [/.+@.+\..+/, 'Must use a valid email address'],
+      match: [/.+@.+\..+/, 'A valid email address is required'],
     },
     password: {
       type: String,
       required: true,
+      minlength: 8,
     },
     // set savedBooks to be an array of data that adheres to the bookSchema
     savedBooks: [bookSchema],
@@ -48,6 +50,9 @@ userSchema.methods.isCorrectPassword = async function (password) {
 };
 
 // when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
+
+
+
 userSchema.virtual('bookCount').get(function () {
   return this.savedBooks.length;
 });

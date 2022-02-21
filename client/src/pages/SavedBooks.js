@@ -62,7 +62,7 @@ const SavedBooks = () => {
     }
   };
 
-  // if data isn't here yet, say so
+  // Indicate if info is not here yet
   if (!loading) {
     return <h2>LOADING...</h2>;
   }
