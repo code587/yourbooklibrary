@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server-express');
 
-
+//created types to be used for graphql queries
 const typeDefs = gql`
   type User {
     _id: ID
@@ -29,7 +29,7 @@ const typeDefs = gql`
     user(username: String!): User
     me: User
   }
-
+  
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
 

@@ -1,20 +1,23 @@
+
+
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Book } = require('../models');
 const { signToken } = require('../utils/auth');
 
+
 const resolvers = {
     Query: {
       user: async (parent, { username, _id }) => {
-        return User.findOne({ username, _id });
+        return User.find({ username, _id });
       },
       me: async (parent, args, context) => {
         if (context.user) {
           return User.findOne({_id: context.user._id});
         }
-        throw new AuthenticationError('You need to be logged in!');
+        throw new AuthenticationError('Sorry, you have to be logged in!');
       },
     },
-     
+     //adding new user with mutations as part of graphql
     Mutation: {
       addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
@@ -22,7 +25,7 @@ const resolvers = {
 
       return { token, user };
     },
-
+    //allowing existing user to login with mutations as part of graphql
     login: async (parent, { email, password }, context) => {
       const user = await User.findOne({ email, password }, context);
 
@@ -52,7 +55,7 @@ const resolvers = {
 
         return book;
       }
-      throw new AuthenticationError('Sorry, you have to be logged in!');
+      throw new AuthenticationError('Sorry, you have to be logged on to save!');
     }
     },
     removeBook: async (parent, { bookId }, context) => {
@@ -63,13 +66,13 @@ const resolvers = {
 
         await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { book: bookId } }
+          { $pull: { savedBook: bookId } }
         );
           
           return book;
         }
         
-          throw new AuthenticationError('Sorry, you have to be logged in!');
+          throw new AuthenticationError('Sorry, you have to be logged on to delete!');
       },
     };
 

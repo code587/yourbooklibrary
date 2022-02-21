@@ -16,24 +16,7 @@ export const QUERY_GET_ME = gql`
       _id
       username
       email
-    }
-  }
-`;
-export const QUERY_SAVE_BOOK = gql`
-  query saveBook($bookId: String) {
-    saveBook(bookId: $bookId) {
-      authors
-      description
-      bookId
-      image
-      link
-      title
-    }
-  }
-`;
-export const QUERY_REMOVE_BOOK = gql`
-  query removeBook($bookId: String) {
-    removeBook(bookId: $bookId) {
+      bookCount
       authors
       description
       bookId

@@ -1,4 +1,6 @@
-// see SignupForm.js for comments
+//Could not get login to work
+
+// imported from appropriate files and react to usestate
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
@@ -6,25 +8,24 @@ import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/Mutations';
 import Auth from '../utils/auth';
 
-
-const LoginForm = (props) => {
-  const [userFormState, setUserFormState] = useState({ email: '', password: '' });
+//creating the state for the user
+const LoginForm = () => {
+  const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   
-  console.log(userFormState);
-  
-  const [login, { error }] = useMutation(LOGIN_USER);
+  const [login] = useMutation(LOGIN_USER);
 
-  const handleInfoChange = (event) => {
+//handles any inputs
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUserFormState({ ...userFormState, [name]: value });
+    setUserFormData({ ...userFormData, [name]: value });
   };
-
+//handles 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
+    // makes sure form has what it needs
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -33,22 +34,21 @@ const LoginForm = (props) => {
 
     try {
       const {data} = await login({
-        variables: {...userFormState}
+        variables: {...userFormData}
       });
 
-      if (error) {
-        throw new Error('Credentials entered are inaccurate!');
+      if (!data) {
+        throw new Error('something went wrong!');
       }
 
-      console.log(data.user);
-
+      //console.log(data.user);
       Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
-
-    setUserFormState({
+    setUserFormData({
+      username: '',
       email: '',
       password: '',
     });
@@ -58,7 +58,7 @@ const LoginForm = (props) => {
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your credentials!
+          Something went wrong with your login credentials!
         </Alert>
         <Form.Group>
           <Form.Label htmlFor='email'>Email</Form.Label>
@@ -66,8 +66,8 @@ const LoginForm = (props) => {
             type='text'
             placeholder='Your email'
             name='email'
-            onChange={handleInfoChange}
-            value={userFormState.email}
+            onChange={handleInputChange}
+            value={userFormData.email}
             required
           />
           <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
@@ -79,14 +79,14 @@ const LoginForm = (props) => {
             type='password'
             placeholder='Your password'
             name='password'
-            onChange={handleInfoChange}
-            value={userFormState.password}
+            onChange={handleInputChange}
+            value={userFormData.password}
             required
           />
           <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(userFormState.email && userFormState.password)}
+          disabled={!(userFormData.email && userFormData.password)}
           type='submit'
           variant='success'>
           Submit

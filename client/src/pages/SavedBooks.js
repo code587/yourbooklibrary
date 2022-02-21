@@ -9,41 +9,17 @@ import {removeBookId} from '../utils/localStorage';
 
 
 const SavedBooks = () => {
-  //const [userData, setUserData] = useState({});
 
-  // use this to determine if `useEffect()` hook needs to run again
-  //const userDataLength = Object.keys(userData).length;
-
+  // determines if useEffect hook needs to run
   const { loading, data } = useQuery(QUERY_GET_ME); 
     // pass URL parameter
-    const userData = data?.me;
+    const userData = data?.me || [];
 
 
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     try {
-
-  //       const response = await GET_ME(token);
-  //       const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-  //       if (!token) {
-  //         return false;
-  //       }
-
-  //       const UserData = await response.json();
-  //       setUserData(GET_ME);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-
-  //   getUserData();
-  // }, [userDataLength]);
-
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
+  // function to remove books 
   const [removeBook] = useMutation(REMOVE_BOOK);
 
-  const handleDeleteBook = async (bookId) => {
+  const handleRemoveBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -55,7 +31,7 @@ const SavedBooks = () => {
         variables: {bookId}
       })
 
-      // upon success, remove book's id from localStorage
+      // removes book if no issues
      removeBookId(bookId);
     } catch (err) {
       console.error(err);
@@ -89,7 +65,7 @@ const SavedBooks = () => {
                   <Card.Title>{book.title}</Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                  <Button className='btn-block btn-danger' onClick={() => handleRemoveBook(book.bookId)}>
                     Delete this Book!
                   </Button>
                 </Card.Body>
