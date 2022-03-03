@@ -24,6 +24,6 @@ You may reach the author at the below contact information.
 
 ## Heroku links
 
-[Heroku]((https://dashboard.heroku.com/apps/secure-dawn-91434)
+[Heroku](https://dashboard.heroku.com/apps/secure-dawn-91434)
 
 [Heroku](https://secure-dawn-91434.herokuapp.com/)
